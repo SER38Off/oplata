@@ -1,1252 +1,649 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" class="dark">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Flux VPN AI — Интеллектуальный Telegram-бот нового поколения</title>
-  <meta name="description" content="Официальный промо-сайт Telegram-бота @FluxVPNAI_bot. 10 флагманских моделей ИИ, 15 режимов общения, 12 культовых персонажей, песочница GPT-5.4 Mini. Без регистрации.">
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Flux VPN AI — AI нового поколения в Telegram">
-  <meta property="og:description" content="10 моделей ИИ, 15 режимов, 12 культовых персонажей в @FluxVPNAI_bot. Попробуйте без регистрации!">
-  <meta property="og:type" content="website">
-
-  <!-- Google Fonts Inter & Fira Code -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Flux VPN AI — Премиальная мультимодельная экосистема ИИ</title>
+  <meta name="description" content="Флагманская AI платформа: 9 нейросетей в low-режиме, 15 режимов диалога, 12 персонажей, GPT Image 2, Live Web Search, память Flux Memory и полная интеграция с Telegram." />
+  
+  <!-- Fonts & Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            'brand-dark': '#070913',
+            'brand-primary': '#6366f1',
+            'brand-accent': '#8b5cf6',
+            'brand-cyan': '#06b6d4',
+            'glass-border': 'rgba(255, 255, 255, 0.1)',
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
 
-  <style>
-    :root {
-      --bg-base: #060911;
-      --bg-surface: rgba(15, 23, 42, 0.65);
-      --bg-glass: rgba(255, 255, 255, 0.04);
-      --border-glass: rgba(255, 255, 255, 0.1);
-      --border-accent: rgba(56, 189, 248, 0.35);
-      --text-primary: #f8fafc;
-      --text-secondary: #94a3b8;
-      --text-muted: #64748b;
-      --accent-blue: #38bdf8;
-      --accent-indigo: #6366f1;
-      --accent-purple: #a855f7;
-      --accent-emerald: #10b981;
-      --accent-amber: #f59e0b;
-      --radius-sm: 8px;
-      --radius-md: 14px;
-      --radius-lg: 20px;
-      --radius-xl: 26px;
-      --shadow-glass: 0 16px 40px -10px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    }
-
-    body {
-      background-color: var(--bg-base);
-      color: var(--text-primary);
-      min-height: 100vh;
-      overflow-x: hidden;
-      line-height: 1.5;
-      position: relative;
-    }
-
-    /* Ambient Fluid Floating Orbs */
-    .fluid-orb {
-      position: absolute;
-      width: 500px;
-      height: 500px;
-      border-radius: 50%;
-      filter: blur(120px);
-      opacity: 0.35;
-      pointer-events: none;
-      z-index: 1;
-      animation: floatOrb 22s ease-in-out infinite alternate;
-    }
-    .orb-indigo {
-      top: -80px;
-      left: 15%;
-      background: radial-gradient(circle, #6366f1 0%, transparent 70%);
-    }
-    .orb-cyan {
-      top: 35%;
-      right: 5%;
-      background: radial-gradient(circle, #06b6d4 0%, transparent 70%);
-      animation-duration: 28s;
-    }
-    .orb-purple {
-      top: 70%;
-      left: 10%;
-      background: radial-gradient(circle, #a855f7 0%, transparent 70%);
-      animation-duration: 25s;
-    }
-
-    @keyframes floatOrb {
-      0% { transform: translate(0, 0) scale(1); }
-      50% { transform: translate(40px, 60px) scale(1.1); }
-      100% { transform: translate(-30px, -40px) scale(0.95); }
-    }
-
-    /* Liquid Glassmorphism Cards */
-    .liquid-glass {
-      background: var(--bg-surface);
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
-      border: 1px solid var(--border-glass);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-glass);
-      transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
-    }
-
-    .chroma-card {
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      box-shadow: 0 12px 35px rgba(56, 189, 248, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-    }
-
-    .glow-hover:hover {
-      border-color: rgba(56, 189, 248, 0.45);
-      box-shadow: 0 16px 40px rgba(56, 189, 248, 0.22);
-      transform: translateY(-4px);
-    }
-
-    /* 3D Tilt Card Base */
-    .tilt-card {
-      transform-style: preserve-3d;
-      perspective: 1000px;
-    }
-    .tilt-inner {
-      transform: translateZ(0);
-      transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-    .tilt-pop {
-      transform: translateZ(15px);
-    }
-
-    /* Gradient Typography */
-    .gradient-text-3d {
-      background: linear-gradient(135deg, #ffffff 20%, #cbd5e1 50%, #38bdf8 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0 4px 20px rgba(56, 189, 248, 0.2);
-    }
-
-    /* Buttons */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px 24px;
-      font-size: 14px;
-      font-weight: 700;
-      border-radius: var(--radius-md);
-      cursor: pointer;
-      text-decoration: none;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      border: none;
-      outline: none;
-    }
-    .btn-liquid {
-      background: linear-gradient(135deg, #229ED9 0%, #0088cc 100%);
-      color: #fff;
-      box-shadow: 0 8px 24px rgba(34, 158, 217, 0.45);
-    }
-    .btn-liquid:hover {
-      transform: translateY(-2px) scale(1.02);
-      box-shadow: 0 12px 30px rgba(34, 158, 217, 0.6);
-      color: #fff;
-    }
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.07);
-      color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-    }
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.12);
-      border-color: rgba(255, 255, 255, 0.25);
-      transform: translateY(-2px);
-      color: #fff;
-    }
-    .btn-outline {
-      background: transparent;
-      color: #cbd5e1;
-      border: 1px solid rgba(255, 255, 255, 0.15);
-    }
-    .btn-outline:hover {
-      border-color: #38bdf8;
-      color: #38bdf8;
-      background: rgba(56, 189, 248, 0.06);
-    }
-    .btn-sm {
-      padding: 6px 14px;
-      font-size: 12px;
-    }
-    .btn-lg {
-      padding: 15px 32px;
-      font-size: 15px;
-    }
-
-    /* Badges */
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
-      border-radius: 9999px;
-      font-size: 11px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .badge-emerald {
-      background: rgba(16, 185, 129, 0.15);
-      color: #34d399;
-      border: 1px solid rgba(16, 185, 129, 0.3);
-    }
-    .badge-cyan {
-      background: rgba(6, 182, 212, 0.15);
-      color: #22d3ee;
-      border: 1px solid rgba(6, 182, 212, 0.3);
-    }
-    .badge-fire {
-      background: rgba(245, 158, 11, 0.15);
-      color: #fbbf24;
-      border: 1px solid rgba(245, 158, 11, 0.3);
-    }
-
-    .live-pulse-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #10b981;
-      box-shadow: 0 0 10px #10b981;
-      display: inline-block;
-      animation: pulseDot 2s infinite;
-    }
-    @keyframes pulseDot {
-      0% { transform: scale(0.95); opacity: 0.8; }
-      50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 14px #10b981; }
-      100% { transform: scale(0.95); opacity: 0.8; }
-    }
-
-    /* Topbar Header */
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 32px;
-      background: rgba(6, 9, 17, 0.85);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-    .topbar-nav {
-      display: flex;
-      align-items: center;
-      gap: 22px;
-    }
-    .topbar-nav a {
-      color: var(--text-secondary);
-      font-size: 13.5px;
-      font-weight: 600;
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .topbar-nav a:hover {
-      color: #fff;
-    }
-
-    /* 3D Holographic AI Gyro-Core Showcase */
-    .holo-stage {
-      position: relative;
-      width: 280px;
-      height: 280px;
-      margin: 25px auto 45px;
-      perspective: 1200px;
-    }
-    .holo-sphere {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      transform-style: preserve-3d;
-      animation: holoRotate 24s linear infinite;
-    }
-    .holo-ring {
-      position: absolute;
-      top: 10%;
-      left: 10%;
-      width: 80%;
-      height: 80%;
-      border-radius: 50%;
-      border: 2px dashed rgba(56, 189, 248, 0.4);
-      box-shadow: 0 0 25px rgba(56, 189, 248, 0.2), inset 0 0 25px rgba(56, 189, 248, 0.1);
-    }
-    .ring-1 { transform: rotateX(60deg) rotateY(20deg); }
-    .ring-2 { transform: rotateX(-45deg) rotateY(45deg); border-color: rgba(99, 102, 241, 0.5); }
-    .ring-3 { transform: rotateX(25deg) rotateY(-60deg); border-color: rgba(168, 85, 247, 0.4); }
-    .holo-nucleus {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 76px;
-      height: 76px;
-      background: radial-gradient(circle, #38bdf8 0%, #6366f1 70%, transparent 100%);
-      border-radius: 50%;
-      box-shadow: 0 0 45px #38bdf8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 32px;
-      color: #fff;
-    }
-
-    @keyframes holoRotate {
-      0% { transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
-      100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg); }
-    }
-
-    .hero-floating-pill {
-      position: absolute;
-      background: rgba(15, 23, 42, 0.8);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(16px);
-      padding: 8px 16px;
-      border-radius: 9999px;
-      font-size: 12px;
-      font-weight: 700;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
-      pointer-events: none;
-      animation: floatPill 6s ease-in-out infinite alternate;
-    }
-    .pill-float-top { top: -10px; right: -20px; animation-delay: 0s; }
-    .pill-float-bottom { bottom: 10px; left: -30px; animation-delay: 2s; }
-    .pill-float-left { top: 50%; left: -60px; animation-delay: 4s; }
-
-    @keyframes floatPill {
-      0% { transform: translateY(0px); }
-      100% { transform: translateY(-10px); }
-    }
-
-    /* Grids */
-    .grid-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-      gap: 20px;
-    }
-
-    /* Form input */
-    .form-input {
-      width: 100%;
-      padding: 13px 18px;
-      border-radius: var(--radius-md);
-      background: rgba(0, 0, 0, 0.35);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: #fff;
-      font-size: 14px;
-      outline: none;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-    .form-input:focus {
-      border-color: var(--accent-blue);
-      box-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
-    }
-
-    /* Code block snippet */
-    code {
-      font-family: 'Fira Code', monospace;
-      font-size: 12.5px;
-      background: rgba(255, 255, 255, 0.08);
-      padding: 2px 6px;
-      border-radius: 6px;
-      color: #38bdf8;
-    }
-
-    /* Modal Backdrop */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(12px);
-      z-index: 999;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-    }
-    .modal-content {
-      background: #0b0f19;
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 20px;
-      padding: 30px;
-      max-width: 600px;
-      width: 100%;
-      max-height: 80vh;
-      overflow-y: auto;
-      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
-    }
-
-    @media (max-width: 900px) {
-      .topbar-nav { display: none; }
-      .topbar { padding: 12px 18px; }
-      .holo-stage { width: 220px; height: 220px; }
-      .pill-float-left { display: none; }
-      .pill-float-top { right: 0; }
-      .pill-float-bottom { left: 0; }
-    }
-  </style>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/static/css/styles.css" />
+  <link rel="stylesheet" href="/static/css/mobile.css" />
 </head>
-<body>
+<body class="bg-brand-dark text-slate-100 font-sans min-h-screen relative overflow-x-hidden antialiased selection:bg-brand-primary selection:text-white">
 
-  <!-- Ambient Floating Spheres -->
-  <div class="fluid-orb orb-indigo"></div>
-  <div class="fluid-orb orb-cyan"></div>
-  <div class="fluid-orb orb-purple"></div>
+  <!-- Background 3D Gyro-Core Canvas -->
+  <canvas id="bg-canvas" class="fixed inset-0 pointer-events-none z-0 opacity-70"></canvas>
+  <div class="fixed inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.18),rgba(255,255,255,0))] pointer-events-none z-0"></div>
 
-  <!-- Topbar Header -->
-  <header class="topbar">
-    <div style="display:flex; align-items:center; gap:12px; cursor:pointer;" onclick="window.scrollTo({top:0, behavior:'smooth'})">
-      <div style="width:38px; height:38px; border-radius:12px; background:linear-gradient(135deg, #229ED9 0%, #0088cc 100%); display:flex; align-items:center; justify-content:center; font-weight:800; color:#fff; font-size:20px; box-shadow:0 0 20px rgba(34,158,217,0.5);">
-        ⚡
+  <!-- Ambient Organic Liquid Glass Blobs -->
+  <div class="ambient-orb orb-1"></div>
+  <div class="ambient-orb orb-2"></div>
+  <div class="ambient-orb orb-3"></div>
+  <div class="ambient-orb orb-4"></div>
+
+  <!-- Main Navigation Header -->
+  <header class="sticky top-0 z-40 backdrop-blur-xl bg-brand-dark/70 border-b border-white/10 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <div class="flex items-center space-x-3 cursor-pointer" data-view="landing">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-primary to-cyan-400 p-[1px] shadow-lg shadow-brand-primary/20">
+          <div class="w-full h-full bg-brand-dark rounded-xl flex items-center justify-center">
+            <span class="text-xl">⚡</span>
+          </div>
+        </div>
+        <div>
+          <span class="text-lg font-black tracking-tight text-white flex items-center gap-1.5">
+            FLUX <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary to-cyan-400">VPN AI</span>
+          </span>
+          <span class="block text-[9px] uppercase tracking-wider text-white/40 font-mono -mt-1">low-mode cluster</span>
+        </div>
       </div>
-      <div>
-        <div style="font-weight:800; font-size:17.5px; color:#fff; letter-spacing:0.3px;">Flux VPN AI</div>
-        <div style="font-size:10px; color:#38bdf8; font-weight:700; letter-spacing:1px;">OFFICIAL TELEGRAM BOT</div>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden lg:flex items-center space-x-1 text-xs font-medium text-white/70">
+        <a href="#landing" data-view="landing" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all active-nav">Обзор</a>
+        <a href="#chat" data-view="chat" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Чат ИИ</a>
+        <a href="#art" data-view="art" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">GPT Image 2</a>
+        <a href="#characters" data-view="characters" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Персонажи</a>
+        <a href="#studio" data-view="studio" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Студия</a>
+        <a href="#social" data-view="social" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Сообщество</a>
+        <a href="#billing" data-view="billing" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Тарифы</a>
+        <a href="#referrals" data-view="referrals" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Рефералы</a>
+        <a href="#gamification" data-view="gamification" class="px-3 py-1.5 rounded-lg hover:text-white hover:bg-white/5 transition-all">Квесты</a>
+        <a href="#admin" data-view="admin" id="nav-admin-link" class="px-3 py-1.5 rounded-lg text-amber-400 hover:bg-amber-400/10 transition-all hidden">Админка</a>
+      </nav>
+
+      <!-- Right Header Actions -->
+      <div class="flex items-center space-x-3">
+        <!-- Guest Capsule -->
+        <div id="guest-auth-capsule" class="flex items-center space-x-2">
+          <button class="trigger-login-btn px-4 py-2 rounded-xl bg-gradient-to-r from-brand-primary to-indigo-600 hover:opacity-90 text-white text-xs font-bold shadow-md shadow-brand-primary/20 transition-all flex items-center gap-1.5">
+            <span>✈️</span>
+            <span>Войти через Telegram</span>
+          </button>
+        </div>
+
+        <!-- User Capsule (Logged In) -->
+        <div id="user-profile-capsule" class="hidden flex items-center space-x-3">
+          <div class="glass-card px-3 py-1.5 rounded-xl border border-white/10 flex items-center space-x-2">
+            <span id="user-tier-badge" class="px-2 py-0.5 rounded-md bg-brand-primary/20 text-brand-primary text-[10px] font-mono font-bold">FREE</span>
+            <span id="user-name-display" class="text-xs font-bold text-white max-w-[120px] truncate">User</span>
+            <button id="user-logout-btn" class="text-white/40 hover:text-rose-400 text-xs transition-colors" title="Выйти">🚪</button>
+          </div>
+        </div>
+
+        <!-- Mobile Drawer Toggle -->
+        <button id="mobile-drawer-toggle" class="lg:hidden p-2 rounded-xl glass-card text-white/80 hover:text-white">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
       </div>
+
     </div>
-
-    <!-- Center Quick Anchors -->
-    <nav class="topbar-nav">
-      <a href="javascript:void(0)" onclick="window.scrollTo({top:0, behavior:'smooth'})">О сервисе</a>
-      <a href="javascript:void(0)" onclick="document.getElementById('characters-section')?.scrollIntoView({behavior:'smooth'})">🎭 12 Персонажей</a>
-      <a href="javascript:void(0)" onclick="document.getElementById('modes-section')?.scrollIntoView({behavior:'smooth'})">⚙️ 15 Режимов</a>
-      <a href="javascript:void(0)" onclick="document.getElementById('models-section')?.scrollIntoView({behavior:'smooth'})">🧠 10 Моделей ИИ</a>
-      <a href="javascript:void(0)" onclick="document.getElementById('pricing-section')?.scrollIntoView({behavior:'smooth'})">👑 Тарифы от 99 ₽</a>
-    </nav>
-
-    <!-- Right Direct Telegram CTA -->
-    <a href="https://t.me/FluxVPNAI_bot" target="_blank" class="btn btn-liquid">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.52 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/></svg>
-      <span>Запустить бота @FluxVPNAI_bot ↗</span>
-    </a>
   </header>
 
-  <main style="max-width: 1200px; margin: 0 auto; padding: 0 20px 80px; position: relative; z-index: 2;">
+  <!-- Mobile Drawer Overlay -->
+  <div id="drawer-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden transition-opacity"></div>
 
-    <!-- Hero Section -->
-    <section style="text-align:center; padding: 65px 0 40px;">
-      <div style="display:inline-flex; align-items:center; gap:10px; background:rgba(34,158,217,0.15); border:1px solid rgba(56,189,248,0.4); padding:8px 24px; border-radius:9999px; margin-bottom:24px; backdrop-filter:blur(16px); box-shadow: 0 0 25px rgba(56,189,248,0.25);">
-        <span class="live-pulse-dot"></span>
-        <span style="font-size:12.5px; color:#38bdf8; font-weight:800; letter-spacing:0.8px;">FLUX VPN AI • ОФИЦИАЛЬНЫЙ TELEGRAM-БОТ 2026</span>
+  <!-- Mobile Slide-out Drawer -->
+  <div id="mobile-drawer" class="fixed top-0 right-0 bottom-0 w-72 bg-brand-dark/95 border-l border-white/10 p-6 z-50 transform translate-x-full transition-transform duration-300 flex flex-col justify-between">
+    <div>
+      <div class="flex items-center justify-between pb-4 border-b border-white/10 mb-6">
+        <span class="text-base font-black text-white">МЕНЮ FLUX</span>
+        <button data-close-modal="mobile-drawer" class="text-white/50 hover:text-white">✕</button>
       </div>
+      <nav class="flex flex-col space-y-2 text-sm">
+        <a href="#landing" data-view="landing" class="px-3 py-2 rounded-lg hover:bg-white/5 text-white/80">🏠 Главная</a>
+        <a href="#chat" data-view="chat" class="px-3 py-2 rounded-lg hover:bg-white/5 text-white/80">💬 Чат ИИ</a>
+        <a href="#art" data-view="art" class="px-3 py-2 rounded-lg hover:bg-white/5 text-white/80">🎨 GPT Image 2</a>
+        <a href="#characters" data-view="characters" class="px-3 py-2 rounded-lg hover:bg-white/5 text-white/80">🎭 Персонажи (12)</a>
+        <a href="#studio" data-view="studio" class="px-3 py-2 rounded-lg hover:bg-white/5 text-white/80">🛠 Студия Агентов</a>
+        <a href="#social" data-view="social" class="px-3 py-2 rounded-lg hover:bg-white/5 text-white/80">👥 Сообщество</a>
+        <a href="#billing" data-view="billing" class="px-3 py-2 rounded-lg hover:bg-white/5 text-white/80">💎 Тарифы</a>
+        <a href="#referrals" data-view="referrals" class="px-3 py-2 rounded-lg hover:bg-white/5 text-white/80">🤝 Рефералы</a>
+        <a href="#gamification" data-view="gamification" class="px-3 py-2 rounded-lg hover:bg-white/5 text-white/80">🎯 Квесты & Стрик</a>
+        <a href="#admin" data-view="admin" class="px-3 py-2 rounded-lg hover:bg-white/5 text-amber-400">⚡ Админка</a>
+      </nav>
+    </div>
+    <div class="pt-4 border-t border-white/10">
+      <a href="https://t.me/FluxVPNTestbot" target="_blank" class="block w-full py-2 text-center rounded-xl bg-brand-primary text-white text-xs font-bold">
+        Открыть @FluxVPNTestbot ↗
+      </a>
+    </div>
+  </div>
+
+  <!-- Main View Container -->
+  <main class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-24 lg:pb-12">
+
+    <!-- ================= VIEW 1: LANDING ================= -->
+    <section id="view-landing" class="view-section active space-y-16">
       
-      <h1 class="gradient-text-3d" style="font-size: clamp(2.4rem, 5.5vw, 4.2rem); font-weight:800; line-height:1.15; margin-bottom:22px; letter-spacing:-0.02em;">
-        Интеллект нового поколения.<br/>Жидкое стекло. Чистая мощь.
-      </h1>
-      
-      <p style="font-size: clamp(1.05rem, 1.8vw, 1.3rem); color: var(--text-secondary); max-width: 840px; margin: 0 auto 36px; line-height: 1.6;">
-        10 флагманских моделей ИИ, 15 специализированных режимов диалога и 12 культовых персонажей прямо в вашем Telegram-боте <strong>@FluxVPNAI_bot</strong>. Без регистрации, без логинов и паролей.
-      </p>
-      
-      <!-- Action Buttons -->
-      <div style="display:flex; justify-content:center; align-items:center; gap:14px; flex-wrap:wrap; margin-bottom: 36px;">
-        <a href="https://t.me/FluxVPNAI_bot" target="_blank" class="btn btn-liquid btn-lg" style="border-radius:16px;">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 00-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.75-.55 2.92-1.27 4.86-2.11 5.83-2.52 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .37z"/></svg>
-          <span>🚀 Запустить бота в Telegram ↗</span>
-        </a>
-
-        <a href="#models-section" class="btn btn-secondary btn-lg" onclick="document.getElementById('models-section')?.scrollIntoView({behavior:'smooth'}); return false;">
-          🧠 10 Моделей ИИ
-        </a>
-
-        <a href="#modes-section" class="btn btn-secondary btn-lg" onclick="document.getElementById('modes-section')?.scrollIntoView({behavior:'smooth'}); return false;">
-          ⚙️ 15 Режимов
-        </a>
-
-        <a href="#characters-section" class="btn btn-secondary btn-lg" onclick="document.getElementById('characters-section')?.scrollIntoView({behavior:'smooth'}); return false;">
-          🎭 12 Персонажей
-        </a>
-        
-        <a href="#pricing-section" class="btn btn-secondary btn-lg" onclick="document.getElementById('pricing-section')?.scrollIntoView({behavior:'smooth'}); return false;">
-          👑 Тарифы от 99 ₽
-        </a>
-      </div>
-
-      <!-- Trust Badges -->
-      <div style="display:flex; justify-content:center; align-items:center; gap:20px; flex-wrap:wrap; font-size:13.5px; color:var(--text-muted); margin-bottom: 35px;">
-        <span>⚡ Без регистрации и скачивания</span>
-        <span>•</span>
-        <span>🤖 Официальный бот @FluxVPNAI_bot</span>
-        <span>•</span>
-        <span>💳 Оплата картами РФ, СБП и Telegram Stars</span>
-        <span>•</span>
-        <span>🔒 100% Конфиденциально</span>
-      </div>
-
-      <!-- 3D Holographic AI Gyro-Core Showcase -->
-      <div class="holo-stage">
-        <div class="holo-sphere">
-          <div class="holo-ring ring-1"></div>
-          <div class="holo-ring ring-2"></div>
-          <div class="holo-ring ring-3"></div>
-          <div class="holo-nucleus">⚡</div>
+      <!-- Hero -->
+      <div class="text-center pt-8 md:pt-14 max-w-4xl mx-auto space-y-6">
+        <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full glass-card liquid-pill liquid-float-3d text-xs text-brand-primary font-mono cursor-default shadow-lg">
+          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-ping"></span>
+          <span class="font-bold tracking-wider">9 МОДЕЛЕЙ ИИ • LOW-MODE • БЕЗ ВПН</span>
         </div>
-        
-        <!-- 3D Floating Metric Pills -->
-        <div class="hero-floating-pill pill-float-top">
-          <span class="live-pulse-dot"></span>
-          <span>⚡ GPT-5.4 Mini & Astra</span>
-        </div>
-        <div class="hero-floating-pill pill-float-bottom">
-          <span>🤖 @FluxVPNAI_bot в Telegram</span>
-        </div>
-        <div class="hero-floating-pill pill-float-left">
-          <span>💎 15 Режимов • 10 Моделей</span>
-        </div>
-      </div>
-
-      <!-- Live Interactive AI Demo Playground (GPT-5.4 Mini, strict 2 requests check) -->
-      <div class="liquid-glass chroma-card tilt-card" style="padding: 28px; max-width: 960px; margin: 0 auto; text-align: left;">
-        <div class="tilt-inner">
-          <div style="display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom:14px; margin-bottom:18px; flex-wrap:wrap; gap:10px;">
-            <div style="display:flex; align-items:center; gap:10px;">
-              <div style="display:flex; gap:6px;">
-                <span style="width:11px; height:11px; border-radius:50%; background:#ef4444; display:inline-block; box-shadow:0 0 8px rgba(239,68,68,0.5);"></span>
-                <span style="width:11px; height:11px; border-radius:50%; background:#f59e0b; display:inline-block; box-shadow:0 0 8px rgba(245,158,11,0.5);"></span>
-                <span style="width:11px; height:11px; border-radius:50%; background:#10b981; display:inline-block; box-shadow:0 0 8px rgba(16,185,129,0.5);"></span>
-              </div>
-              <div style="font-size:14px; font-weight:700; color:#fff;">✨ Живая песочница AI (GPT-5.4 Mini) — Протестируйте прямо сейчас:</div>
-            </div>
-            <span class="badge" style="font-size:11.5px; background:rgba(56,189,248,0.15); color:#38bdf8; border:1px solid rgba(56,189,248,0.3); padding:4px 12px;">
-              ⚡ 2 БЕСПЛАТНЫХ ЗАПРОСА (Осталось: <span id="demo-requests-left">2</span>/2)
-            </span>
-          </div>
-
-          <!-- Quick Prompt Suggestions -->
-          <div style="display:flex; gap:8px; overflow-x:auto; padding-bottom:10px; margin-bottom:14px;">
-            <button class="btn btn-secondary btn-sm" style="border-radius:9999px; white-space:nowrap;" onclick="setDemoPrompt('💡 Придумай 3 идеи для стартапа с высокой маржинальностью в 2026 году')">
-              💡 Идеи для стартапа
-            </button>
-            <button class="btn btn-secondary btn-sm" style="border-radius:9999px; white-space:nowrap;" onclick="setDemoPrompt('🐍 Скрипт Telegram-бота на Python с интеграцией нейросети')">
-              🐍 Скрипт Telegram-бота
-            </button>
-            <button class="btn btn-secondary btn-sm" style="border-radius:9999px; white-space:nowrap;" onclick="setDemoPrompt('🎨 Промпт для GPT Image 2: неоновый киберпанк город 8K')">
-              🎨 Промпт для арта
-            </button>
-            <button class="btn btn-secondary btn-sm" style="border-radius:9999px; white-space:nowrap;" onclick="setDemoPrompt('📈 Составь пошаговый план рекламы в Telegram')">
-              📈 План рекламы
-            </button>
-          </div>
-
-          <!-- Interactive Demo Input -->
-          <div style="display:flex; gap:10px; margin-bottom:16px;">
-            <input 
-              type="text" 
-              id="landing-demo-input" 
-              class="form-input" 
-              placeholder="Задайте вопрос нейросети GPT-5.4 Mini..." 
-              value="🎨 Промпт для GPT Image 2: неоновый киберпанк город 8K"
-              onkeydown="if(event.key==='Enter') submitDemoPrompt()"
-            />
-            <button class="btn btn-liquid" id="btn-submit-demo" style="flex-shrink:0; padding:10px 24px;" onclick="submitDemoPrompt()">
-              ⚡ Спросить
-            </button>
-          </div>
-
-          <!-- Live Output Area -->
-          <div id="landing-demo-output" class="liquid-glass" style="border-radius:14px; padding:18px; font-size:14px; line-height:1.6; color:#e2e8f0; min-height:95px; background:rgba(0,0,0,0.4);">
-            <div style="color:var(--text-muted); font-size:13px;">
-              Нажмите «⚡ Спросить», чтобы запустить живой ответ нейросети прямо в браузере.
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Telegram Bot Showcase Banner -->
-    <section style="margin: 40px 0;">
-      <div class="liquid-glass chroma-card tilt-card" style="padding:36px 32px; border-radius:24px;">
-        <div class="tilt-inner" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:24px;">
-          <div style="max-width:640px;">
-            <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(34,158,217,0.25); color:#38bdf8; padding:5px 14px; border-radius:9999px; font-size:12px; font-weight:800; margin-bottom:14px; box-shadow:0 0 20px rgba(56,189,248,0.3);">
-              <span class="live-pulse-dot"></span>
-              <span>ЕДИНЫЙ ТЕЛЕГРАМ-БОТ</span>
-            </div>
-            <h3 style="font-size:26px; font-weight:800; margin-bottom:12px; color:#fff;">
-              Flux VPN AI всегда под рукой — @FluxVPNAI_bot
-            </h3>
-            <p style="color:var(--text-secondary); font-size:14.5px; line-height:1.6; margin-bottom:20px;">
-              Общайтесь с мобильного телефона или ПК прямо в Telegram! Переключайте любую из 10 моделей командой <code>/models</code>, активируйте 15 стилей общения командой <code>/modes</code> и выбирайте персонажей <code>/characters</code>.
-            </p>
-            <div style="display:flex; gap:12px; flex-wrap:wrap;">
-              <a href="https://t.me/FluxVPNAI_bot" target="_blank" class="btn btn-liquid" style="padding:12px 24px;">
-                🚀 Открыть бота @FluxVPNAI_bot ↗
-              </a>
-              <a href="https://t.me/FluxVPNAI_bot?start=models" target="_blank" class="btn btn-secondary" style="padding:12px 20px;">
-                🧠 Модели (/models)
-              </a>
-              <a href="https://t.me/FluxVPNAI_bot?start=modes" target="_blank" class="btn btn-secondary" style="padding:12px 20px;">
-                ⚙️ Режимы (/modes)
-              </a>
-            </div>
-          </div>
-
-          <div class="liquid-glass" style="padding:24px 28px; text-align:center; min-width:250px; border-radius:20px; background:rgba(0,0,0,0.5);">
-            <div style="font-size:48px; margin-bottom:10px; filter:drop-shadow(0 0 18px rgba(56,189,248,0.7));">🤖</div>
-            <div style="font-weight:800; color:#fff; font-size:18px;">@FluxVPNAI_bot</div>
-            <div style="font-size:12px; color:var(--text-muted); margin-top:4px;">Официальный Telegram Бот</div>
-            <div class="badge badge-emerald" style="margin-top:12px; font-size:11px; padding:5px 14px;">● ОНЛАЙН 24/7</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SECTION: 10 Моделей ИИ (Strictly matching user Photo 4) -->
-    <section id="models-section" style="margin: 80px 0;">
-      <div style="text-align:center; margin-bottom:35px;">
-        <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(34,197,94,0.15); border:1px solid rgba(34,197,94,0.3); color:#4ade80; padding:5px 16px; border-radius:9999px; font-size:12px; font-weight:800; margin-bottom:12px;">
-          🧠 НЕЙРОСЕТЕВОЙ КЛАСТЕР
-        </div>
-        <h2 class="gradient-text-3d" style="font-size:2.4rem; font-weight:800; margin:6px 0;">
-          10 Моделей ИИ
-        </h2>
-        <p style="color:var(--text-secondary); font-size:15px; max-width:700px; margin:0 auto;">
-          Все модели из меню Telegram-бота (команда <code>/models</code>). Нажмите на любую модель, чтобы переключить её в боте.
+        <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black text-white tracking-tight leading-tight">
+          Интеллект нового поколения в дизайне <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-primary via-indigo-400 to-cyan-300">жидкого стекла</span>
+        </h1>
+        <p class="text-base sm:text-lg text-white/70 max-w-2xl mx-auto leading-relaxed">
+          Единый доступ к передовому кластеру нейросетей, 15 специализированным режимам, 12 культовым персонажам и генерации изображений без ограничений и блокировок.
         </p>
-      </div>
-
-      <div class="grid-container" id="models-grid">
-        <!-- Models rendered by JS -->
-      </div>
-    </section>
-
-    <!-- SECTION: 15 Режимов общения (Strictly matching user Photo 5) -->
-    <section id="modes-section" style="margin: 80px 0;">
-      <div style="text-align:center; margin-bottom:35px;">
-        <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(6,182,212,0.15); border:1px solid rgba(6,182,212,0.3); color:#22d3ee; padding:5px 16px; border-radius:9999px; font-size:12px; font-weight:800; margin-bottom:12px;">
-          ⚙️ СТИЛИ И СЦЕНАРИИ
-        </div>
-        <h2 class="gradient-text-3d" style="font-size:2.4rem; font-weight:800; margin:6px 0;">
-          15 Режимов Общения
-        </h2>
-        <p style="color:var(--text-secondary); font-size:15px; max-width:700px; margin:0 auto;">
-          Все 15 стилей общения из меню Telegram-бота (команда <code>/modes</code>). Мгновенное переключение тональности ответов.
-        </p>
-      </div>
-
-      <div class="grid-container" id="modes-grid">
-        <!-- Modes rendered by JS -->
-      </div>
-    </section>
-
-    <!-- SECTION: 12 Культовых AI-Персонажей (Meme / Horror / Gaming) -->
-    <section id="characters-section" style="margin: 80px 0;">
-      <div style="text-align:center; margin-bottom:35px;">
-        <div style="display:inline-flex; align-items:center; gap:8px; background:rgba(168,85,247,0.15); border:1px solid rgba(168,85,247,0.3); color:#c084fc; padding:5px 16px; border-radius:9999px; font-size:12px; font-weight:800; margin-bottom:12px;">
-          🎭 КАТАЛОГ КУЛЬТОВЫХ И МЕМНЫХ ПЕРСОНАЖЕЙ
-        </div>
-        <h2 class="gradient-text-3d" style="font-size:2.4rem; font-weight:800; margin:6px 0;">
-          12 Культовых Персонажей
-        </h2>
-        <p style="color:var(--text-secondary); font-size:15px; max-width:700px; margin:0 auto;">
-          Каждый персонаж обладает уникальным характером и узнаваемой манерой речи. Нажмите на любого, чтобы мгновенно начать диалог в Telegram-боте!
-        </p>
-      </div>
-
-      <!-- Bundle Banner -->
-      <div class="liquid-glass chroma-card tilt-card" style="margin-bottom:30px; padding:24px 28px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; border:1px solid rgba(99,102,241,0.4); box-shadow:0 0 35px rgba(99,102,241,0.25);">
-        <div style="display:flex; align-items:center; gap:16px;">
-          <div style="font-size:38px; filter:drop-shadow(0 0 12px rgba(251,191,36,0.6));">👑</div>
-          <div>
-            <h3 style="font-size:18px; font-weight:800; color:#fff; margin-bottom:4px;">Бандл всех 12 персонажей за 199 ₽ (99 ⭐)</h3>
-            <p style="font-size:13.5px; color:var(--text-secondary); margin:0;">
-              Разблокируйте полный каталог из 12 культовых героев навсегда с выгодой более 65% (по отдельности 49 ₽ за каждого).
-            </p>
-          </div>
-        </div>
-        <a href="https://t.me/FluxVPNAI_bot?start=buy_characters" target="_blank" class="btn btn-liquid" style="padding:12px 24px; font-size:14px; font-weight:800;">
-          ⚡ Разблокировать всех 12 героев в боте ↗
-        </a>
-      </div>
-
-      <!-- Characters Grid -->
-      <div class="grid-container" id="characters-grid">
-        <!-- Characters rendered by JS -->
-      </div>
-    </section>
-
-    <!-- SECTION: Тарифы Flux AI (Точно по тексту пользователя) -->
-    <section id="pricing-section" style="margin: 80px 0;">
-      <div style="text-align:center; margin-bottom:45px;">
-        <span class="badge badge-fire" style="font-size:12px; margin-bottom:10px; padding:6px 14px;">ОФИЦИАЛЬНАЯ ОПЛАТА ЮKASSA И TELEGRAM STARS</span>
-        <h2 class="gradient-text-3d" style="font-size:2.4rem; font-weight:800; margin:8px 0;">💎 Тарифы Flux AI</h2>
-        <p style="color:var(--text-secondary); font-size:15px;">Прозрачные тарифные планы для официального Telegram-бота @FluxVPNAI_bot.</p>
-      </div>
-
-      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap:20px; align-items:stretch;">
-        <!-- Free — бесплатно -->
-        <div class="liquid-glass tilt-card" style="display:flex; flex-direction:column; justify-content:space-between; padding:26px;">
-          <div class="tilt-inner" style="display:flex; flex-direction:column; justify-content:space-between; height:100%;">
-            <div>
-              <h3 style="font-size:18px; font-weight:700; color:#fff;">Free</h3>
-              <div style="font-size:28px; font-weight:800; margin:10px 0; color:#fff;">0 ₽ <span style="font-size:13px; font-weight:400; color:var(--text-muted);">(бесплатно)</span></div>
-              <ul style="list-style:none; font-size:12.5px; display:flex; flex-direction:column; gap:8px; padding:0; margin:0 0 16px;">
-                <li><strong>Модели:</strong> ⚡ GPT-5.4 Mini</li>
-                <li><strong>Память:</strong> 5 сообщений</li>
-                <li><strong>Чат:</strong> 2/мин, 10/сутки, 30/неделю</li>
-                <li><strong>Аудио:</strong> недоступно</li>
-                <li><strong>Слоты:</strong> персонажи — 0, агенты — 0, режимы — 0</li>
-              </ul>
-            </div>
-            <a href="https://t.me/FluxVPNAI_bot" target="_blank" class="btn btn-secondary" style="margin-top:24px; width:100%;">
-              Запустить бесплатно ↗
-            </a>
-          </div>
-        </div>
-
-        <!-- Basic — 99 ₽ / 49 ⭐ (30 дней) -->
-        <div class="liquid-glass tilt-card" style="display:flex; flex-direction:column; justify-content:space-between; padding:26px;">
-          <div class="tilt-inner" style="display:flex; flex-direction:column; justify-content:space-between; height:100%;">
-            <div>
-              <h3 style="font-size:18px; font-weight:700; color:#fff;">Basic</h3>
-              <div style="font-size:28px; font-weight:800; margin:10px 0; color:#fff;">99 ₽ <span style="font-size:13px; font-weight:400; color:var(--text-muted);">/ 49 ⭐ (30 дней)</span></div>
-              <ul style="list-style:none; font-size:12.5px; display:flex; flex-direction:column; gap:8px; padding:0; margin:0 0 16px;">
-                <li><strong>Модели:</strong> 🌙 GPT-5.6 Luna, ⚡ GPT-5.4 Mini, 💡 GLM-5.2</li>
-                <li><strong>Память:</strong> 10 сообщений</li>
-                <li><strong>Чат:</strong> 4/мин, 30/сутки, 100/неделю</li>
-                <li><strong>Аудио:</strong> недоступно</li>
-                <li><strong>Слоты:</strong> персонажи — 1, агенты — 0, режимы — 0</li>
-              </ul>
-            </div>
-            <a href="https://t.me/FluxVPNAI_bot?start=buy_basic" target="_blank" class="btn btn-outline" style="margin-top:24px; width:100%;">
-              Подключить Basic ↗
-            </a>
-          </div>
-        </div>
-
-        <!-- Plus — 299 ₽ / 149 ⭐ (30 дней) -->
-        <div class="liquid-glass tilt-card" style="display:flex; flex-direction:column; justify-content:space-between; padding:26px;">
-          <div class="tilt-inner" style="display:flex; flex-direction:column; justify-content:space-between; height:100%;">
-            <div>
-              <h3 style="font-size:18px; font-weight:700; color:#fff;">Plus</h3>
-              <div style="font-size:28px; font-weight:800; margin:10px 0; color:#fff;">299 ₽ <span style="font-size:13px; font-weight:400; color:var(--text-muted);">/ 149 ⭐ (30 дней)</span></div>
-              <ul style="list-style:none; font-size:12.5px; display:flex; flex-direction:column; gap:8px; padding:0; margin:0 0 16px;">
-                <li><strong>Модели:</strong> 🌙 GPT-5.6 Luna, ⚡ GPT-5.4 Mini, 💎 GPT-5.5, 💎 GPT-5.4, 🚀 GLM-5.3 Flash, 💡 GLM-5.2</li>
-                <li><strong>Память:</strong> 20 сообщений</li>
-                <li><strong>Чат:</strong> 8/мин, 80/сутки, 300/неделю</li>
-                <li><strong>Аудио:</strong> недоступно</li>
-                <li><strong>Слоты:</strong> персонажи — 2, агенты — 1, режимы — 1</li>
-              </ul>
-            </div>
-            <a href="https://t.me/FluxVPNAI_bot?start=buy_plus" target="_blank" class="btn btn-outline" style="margin-top:24px; width:100%;">
-              Подключить Plus ↗
-            </a>
-          </div>
-        </div>
-
-        <!-- Pro — 499 ₽ / 299 ⭐ (30 дней) -->
-        <div class="liquid-glass chroma-card tilt-card" style="display:flex; flex-direction:column; justify-content:space-between; padding:26px; position:relative; transform:scale(1.02); box-shadow: 0 0 45px rgba(99,102,241,0.35);">
-          <div style="position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:linear-gradient(135deg, #6366f1 0%, #06b6d4 100%); color:#fff; font-size:11px; font-weight:800; padding:4px 14px; border-radius:9999px; letter-spacing:0.6px; box-shadow:0 0 15px rgba(99,102,241,0.6); z-index:3;">
-            👑 ВСЕ МОДЕЛИ & РЕЖИМЫ
-          </div>
-          <div class="tilt-inner" style="display:flex; flex-direction:column; justify-content:space-between; height:100%;">
-            <div>
-              <h3 style="font-size:18px; font-weight:700; color:#fff;">Pro</h3>
-              <div style="font-size:28px; font-weight:800; margin:10px 0; color:#38bdf8;">499 ₽ <span style="font-size:13px; font-weight:400; color:var(--text-muted);">/ 299 ⭐ (30 дней)</span></div>
-              <ul style="list-style:none; font-size:12.5px; display:flex; flex-direction:column; gap:8px; padding:0; margin:0 0 16px;">
-                <li><strong>Модели:</strong> 🌙 GPT-5.6 Luna, ⚡ GPT-5.4 Mini, 💎 GPT-5.5, 💎 GPT-5.6 Sol, 💎 GPT-5.6 Terra, 💎 GPT-5.4, ✨ GPT-6 Astra (low), ⚡ GLM-5.3, 🚀 GLM-5.3 Flash, 💡 GLM-5.2</li>
-                <li><strong>Память:</strong> 40 сообщений</li>
-                <li><strong>Чат:</strong> 15/мин, 200/сутки, 800/неделю</li>
-                <li><strong>Аудио:</strong> недоступно</li>
-                <li><strong>Слоты:</strong> персонажи — 4, агенты — все, режимы — все</li>
-              </ul>
-            </div>
-            <a href="https://t.me/FluxVPNAI_bot?start=buy_pro" target="_blank" class="btn btn-liquid" style="margin-top:24px; width:100%; font-size:14px; font-weight:800;">
-              ⚡ Подключить Pro в боте ↗
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Extra Tariff Terms Banners -->
-      <div style="margin-top:35px; display:flex; flex-direction:column; gap:12px;">
-        <div class="liquid-glass" style="padding:16px 22px; border-radius:16px; font-size:13.5px; color:#cbd5e1; display:flex; align-items:center; gap:12px;">
-          <span style="font-size:20px;">⚙️</span>
-          <span><strong>Все модели на всех тарифах работают только в режиме low.</strong></span>
-        </div>
-
-        <div class="liquid-glass" style="padding:16px 22px; border-radius:16px; font-size:13.5px; color:#cbd5e1; display:flex; align-items:center; gap:12px;">
-          <span style="font-size:20px;">📅</span>
-          <span><strong>Срок покупки: от 1 месяца до 2 лет.</strong> Один месяц оформляется с автопродлением; 3, 6, 12 и 24 месяца оплачиваются один раз без автосписаний.</span>
-        </div>
-
-        <div class="liquid-glass chroma-card" style="padding:18px 24px; border-radius:16px; font-size:13.5px; color:#fff; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px; border:1px solid rgba(56,189,248,0.4);">
-          <div style="display:flex; align-items:center; gap:12px;">
-            <span style="font-size:24px;">🎁</span>
-            <span><strong>Подписчики @FluxVPNOff могут один раз получить Pro на 3 дня без списаний.</strong></span>
-          </div>
-          <a href="https://t.me/FluxVPNOff" target="_blank" class="btn btn-liquid btn-sm" style="padding:8px 18px; font-weight:700;">
-            🎁 Подписаться на @FluxVPNOff ↗
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+          <button data-view="chat" class="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-gradient-to-r from-brand-primary to-indigo-600 hover:scale-105 text-white text-sm font-bold shadow-xl shadow-brand-primary/30 transition-all flex items-center justify-center gap-2">
+            <span>Начать диалог онлайн</span>
+            <span>→</span>
+          </button>
+          <a href="https://t.me/FluxVPNTestbot" target="_blank" class="w-full sm:w-auto px-8 py-3.5 rounded-xl glass-card border border-white/20 hover:border-white/40 text-white text-sm font-bold transition-all flex items-center justify-center gap-2">
+            <span>✈️ Открыть в Telegram</span>
           </a>
         </div>
       </div>
+
+      <!-- Models Cluster Section -->
+      <div class="space-y-6">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-2 border-b border-white/10 pb-4">
+          <div>
+            <h2 class="text-2xl font-black text-white">Кластер из 9 моделей</h2>
+            <p class="text-xs text-white/50">Все модели работают строго в оптимизированном режиме low для максимальной скорости и стабильности</p>
+          </div>
+          <span class="text-xs text-emerald-400 font-mono">● Все системы онлайн</span>
+        </div>
+        <div id="landing-models-showcase" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Features Pillars -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="glass-card p-6 rounded-2xl border border-white/10 space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-cyan-500/20 text-cyan-400 flex items-center justify-center text-xl">🌐</div>
+          <h3 class="text-base font-bold text-white">Live Web Search</h3>
+          <p class="text-xs text-white/60 leading-relaxed">Прямой поиск в интернете в реальном времени. Получайте свежие новости, котировки и актуальные ссылки прямо в диалоге.</p>
+        </div>
+        <div class="glass-card p-6 rounded-2xl border border-white/10 space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl">🧠</div>
+          <h3 class="text-base font-bold text-white">Flux Memory 2.0</h3>
+          <p class="text-xs text-white/60 leading-relaxed">Долговременная ассоциативная память. Нейросеть запоминает ваши предпочтения, стек и привычки навсегда.</p>
+        </div>
+        <div class="glass-card p-6 rounded-2xl border border-white/10 space-y-3">
+          <div class="w-10 h-10 rounded-xl bg-indigo-500/20 text-indigo-400 flex items-center justify-center text-xl">🎨</div>
+          <h3 class="text-base font-bold text-white">GPT Image 2 Генератор</h3>
+          <p class="text-xs text-white/60 leading-relaxed">Создание фотореалистичных артов и концептов в 8+ стилях с встроенной реферальной галереей.</p>
+        </div>
+      </div>
+
+      <!-- Pricing on Landing -->
+      <div class="space-y-6">
+        <div class="text-center max-w-xl mx-auto space-y-2">
+          <h2 class="text-3xl font-black text-white">Прозрачные тарифы</h2>
+          <p class="text-xs text-white/60">От бесплатного старта до безлимитной Pro-мощи. Оплата картами РФ, СБП и Telegram Stars.</p>
+        </div>
+        <div id="landing-pricing-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
     </section>
 
-    <!-- FAQ Section -->
-    <section style="max-width:880px; margin: 70px auto; padding: 0 10px;">
-      <h2 class="gradient-text-3d" style="text-align:center; font-size:2.2rem; font-weight:800; margin-bottom:32px;">Часто задаваемые вопросы</h2>
-      <div style="display:flex; flex-direction:column; gap:14px;">
-        <div class="liquid-glass" style="padding:18px 24px; cursor:pointer;" onclick="toggleFaq(1)">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h4 style="font-size:15px; font-weight:700; color:#fff;">Как начать пользоваться ботом без регистрации?</h4>
-            <span id="faq-icon-1" style="font-size:18px; color:#38bdf8;">+</span>
+    <!-- ================= VIEW 2: AI CHAT ================= -->
+    <section id="view-chat" class="view-section hidden flex flex-col h-[calc(100vh-140px)]">
+      
+      <!-- Top Chat Controls Bar -->
+      <div class="glass-card p-3 rounded-2xl border border-white/10 mb-3 flex flex-wrap items-center justify-between gap-3">
+        
+        <div class="flex flex-wrap items-center gap-2">
+          <!-- Model Selector -->
+          <div class="flex items-center space-x-1.5">
+            <span class="text-xs text-white/50">Модель:</span>
+            <select id="model-select" class="bg-black/40 border border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-white font-medium focus:outline-none focus:border-brand-primary">
+              <!-- Options populated by JS -->
+            </select>
           </div>
-          <p id="faq-answer-1" style="display:none; font-size:13.5px; color:var(--text-secondary); line-height:1.6; margin-top:10px;">
-            Вам не нужно регистрироваться, вводить почту или пароли! Просто нажмите любую кнопку на этом сайте или откройте официального бота <strong>@FluxVPNAI_bot</strong> в Telegram — бот сразу готов к диалогу!
-          </p>
+
+          <!-- Mode Selector -->
+          <div class="flex items-center space-x-1.5">
+            <span class="text-xs text-white/50">Режим:</span>
+            <select id="mode-select" class="bg-black/40 border border-white/10 rounded-xl px-2.5 py-1.5 text-xs text-white font-medium focus:outline-none focus:border-brand-primary">
+              <!-- Options populated by JS -->
+            </select>
+          </div>
+
+          <!-- Web Search Toggle -->
+          <label class="flex items-center space-x-1.5 cursor-pointer bg-black/40 border border-white/10 px-2.5 py-1.5 rounded-xl hover:border-brand-primary/40 transition-colors">
+            <input type="checkbox" id="web-search-toggle" class="rounded text-brand-primary focus:ring-0" />
+            <span class="text-xs text-white/80 font-medium">🌐 Поиск в сети</span>
+          </label>
         </div>
 
-        <div class="liquid-glass" style="padding:18px 24px; cursor:pointer;" onclick="toggleFaq(2)">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h4 style="font-size:15px; font-weight:700; color:#fff;">Как проходит оплата подписок и персонажей?</h4>
-            <span id="faq-icon-2" style="font-size:18px; color:#38bdf8;">+</span>
-          </div>
-          <p id="faq-answer-2" style="display:none; font-size:13.5px; color:var(--text-secondary); line-height:1.6; margin-top:10px;">
-            Оплата происходит официально через надежный российский эквайринг ЮKassa (банковские карты МИР, Visa, Mastercard, СБП и ЮMoney) или с помощью цифровой валюты Telegram Stars.
-          </p>
+        <div class="flex items-center space-x-2">
+          <button id="open-memory-btn" class="px-2.5 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 text-white text-xs border border-white/10 flex items-center space-x-1">
+            <span>🧠</span> <span class="hidden sm:inline">Память</span>
+          </button>
+          <button id="chat-reset-btn" class="px-2.5 py-1.5 rounded-xl bg-white/5 hover:bg-rose-500/20 hover:text-rose-400 text-white/60 text-xs border border-white/10 transition-colors" title="Сбросить диалог">
+            🗑
+          </button>
         </div>
 
-        <div class="liquid-glass" style="padding:18px 24px; cursor:pointer;" onclick="toggleFaq(3)">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h4 style="font-size:15px; font-weight:700; color:#fff;">Что входит в бандл всех 12 персонажей за 199 ₽?</h4>
-            <span id="faq-icon-3" style="font-size:18px; color:#38bdf8;">+</span>
+      </div>
+
+      <!-- Chat Messages Scroll Area -->
+      <div id="chat-messages-container" class="flex-1 overflow-y-auto px-2 py-4 space-y-4 rounded-2xl glass-card border border-white/10 backdrop-blur-md mb-3">
+        <!-- Initial Welcome Message -->
+        <div class="text-center text-white/40 my-8">
+          <div class="w-12 h-12 rounded-2xl bg-brand-primary/10 border border-brand-primary/30 flex items-center justify-center mx-auto mb-3 text-2xl">⚡</div>
+          <h3 class="text-base font-bold text-white mb-1">Готов к работе</h3>
+          <p class="text-xs max-w-md mx-auto">Выберите модель, включите веб-поиск при необходимости и задайте свой вопрос. Память сохраняется автоматически.</p>
+        </div>
+      </div>
+
+      <!-- Typing Indicator -->
+      <div id="typing-indicator" class="hidden px-4 py-1 text-xs text-brand-primary flex items-center space-x-2">
+        <span class="w-2 h-2 rounded-full bg-brand-primary animate-ping"></span>
+        <span>Нейросеть печатает ответ...</span>
+      </div>
+
+      <!-- Chat Input Area -->
+      <div class="glass-card p-2 sm:p-3 rounded-2xl border border-white/10 flex items-end space-x-2 relative">
+        <textarea id="chat-input" rows="1" placeholder="Задайте вопрос нейросети... (Enter — отправить, Shift+Enter — перенос строки)" class="flex-1 bg-transparent text-sm text-white placeholder-white/40 focus:outline-none resize-none max-h-36 py-2 px-2"></textarea>
+        <button id="chat-send-btn" class="p-3 rounded-xl bg-gradient-to-r from-brand-primary to-indigo-600 hover:opacity-90 text-white transition-all shadow-md shadow-brand-primary/30">
+          <svg class="w-5 h-5 transform rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+          </svg>
+        </button>
+      </div>
+
+    </section>
+
+    <!-- ================= VIEW 3: GPT IMAGE 2 ART ================= -->
+    <section id="view-art" class="view-section hidden space-y-8">
+      
+      <!-- Art Generator Box -->
+      <div class="glass-card p-6 rounded-3xl border border-white/10 space-y-4 max-w-3xl mx-auto shadow-2xl">
+        <div class="flex items-center space-x-3">
+          <span class="text-2xl p-2 rounded-xl bg-purple-500/20 border border-purple-500/30 text-purple-400">🎨</span>
+          <div>
+            <h2 class="text-lg font-bold text-white">Генератор GPT Image 2</h2>
+            <p class="text-xs text-white/50">Создавайте уникальные шедевры на основе текстового описания</p>
           </div>
-          <p id="faq-answer-3" style="display:none; font-size:13.5px; color:var(--text-secondary); line-height:1.6; margin-top:10px;">
-            Бандл разблокирует неограниченный доступ ко всем 12 культовым героям (Момо, Навальный, Балди, Бабка Гренни, Слендермен, Сиреноголовый, Smile Dog, Проводник Backrooms, Херобрин, Доге, Троллфейс, Гигачад) навсегда.
-          </p>
         </div>
 
-        <div class="liquid-glass" style="padding:18px 24px; cursor:pointer;" onclick="toggleFaq(4)">
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <h4 style="font-size:15px; font-weight:700; color:#fff;">Как переключать 10 моделей и 15 режимов в Telegram?</h4>
-            <span id="faq-icon-4" style="font-size:18px; color:#38bdf8;">+</span>
+        <div class="space-y-2">
+          <textarea id="art-prompt-input" rows="3" placeholder="Опишите желаемое изображение: Неоновый киберпанк город под дождем, летающие голограммы..." class="w-full bg-black/40 border border-white/10 rounded-2xl p-3 text-sm text-white placeholder-white/40 focus:outline-none focus:border-brand-primary"></textarea>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+          <div>
+            <label class="block text-xs text-white/50 mb-1">Стиль:</label>
+            <select id="art-style-select" class="w-full bg-black/40 border border-white/10 rounded-xl p-2 text-xs text-white focus:outline-none focus:border-brand-primary">
+              <option value="Photorealistic">Фотореализм (Photorealistic)</option>
+              <option value="Anime">Аниме / Манга (Anime)</option>
+              <option value="Cyberpunk">Киберпанк (Cyberpunk)</option>
+              <option value="3D Render">3D Рендер / Cinema 4D</option>
+              <option value="Fantasy Art">Фэнтези Арт (Fantasy)</option>
+              <option value="Oil Painting">Масляная живопись</option>
+              <option value="Pixel Art">Пиксель-арт (Retro)</option>
+            </select>
           </div>
-          <p id="faq-answer-4" style="display:none; font-size:13.5px; color:var(--text-secondary); line-height:1.6; margin-top:10px;">
-            В боте доступны интуитивные команды: <code>/models</code> для выбора одной из 10 моделей (Luna, Mini, Sol, Terra, Astra, GLM), <code>/modes</code> для выбора одного из 15 стилей, <code>/characters</code> для выбора героев и <code>/image</code> для генерации картинок.
-          </p>
+
+          <div>
+            <label class="block text-xs text-white/50 mb-1">Формат (соотношение сторон):</label>
+            <div class="flex items-center space-x-2 pt-1">
+              <label class="flex-1 text-center py-1.5 rounded-xl border border-white/10 text-xs cursor-pointer hover:border-brand-primary transition-all">
+                <input type="radio" name="art-aspect" value="1:1" checked class="hidden peer" />
+                <span class="peer-checked:font-bold peer-checked:text-brand-primary">1:1 Квадрат</span>
+              </label>
+              <label class="flex-1 text-center py-1.5 rounded-xl border border-white/10 text-xs cursor-pointer hover:border-brand-primary transition-all">
+                <input type="radio" name="art-aspect" value="16:9" class="hidden peer" />
+                <span class="peer-checked:font-bold peer-checked:text-brand-primary">16:9 Горизонт</span>
+              </label>
+              <label class="flex-1 text-center py-1.5 rounded-xl border border-white/10 text-xs cursor-pointer hover:border-brand-primary transition-all">
+                <input type="radio" name="art-aspect" value="9:16" class="hidden peer" />
+                <span class="peer-checked:font-bold peer-checked:text-brand-primary">9:16 Сториз</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <button id="art-generate-btn" class="w-full py-3 rounded-xl bg-gradient-to-r from-purple-600 via-indigo-600 to-brand-primary hover:opacity-90 text-white font-bold text-sm shadow-xl shadow-purple-600/20 transition-all flex items-center justify-center">
+          ✨ Сгенерировать
+        </button>
+      </div>
+
+      <!-- Gallery Header -->
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <div>
+          <h3 class="text-xl font-black text-white">Галерея сообщества</h3>
+          <p class="text-xs text-white/50">Работы пользователей Flux VPN AI</p>
+        </div>
+      </div>
+
+      <!-- Gallery Masonry Grid -->
+      <div id="art-gallery-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <!-- Populated by JS -->
+      </div>
+
+    </section>
+
+    <!-- ================= VIEW 4: CHARACTERS ================= -->
+    <section id="view-characters" class="view-section hidden space-y-6">
+      <div class="text-center max-w-2xl mx-auto space-y-2">
+        <h2 class="text-3xl font-black text-white">12 Культовых Персонажей</h2>
+        <p class="text-xs text-white/60">Каждый персонаж наделен индивидуальным стилем речи, культовыми цитатами и характером. Доступны в тарифах или приобретаются навсегда.</p>
+      </div>
+      <div id="characters-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- ================= VIEW 5: STUDIO ================= -->
+    <section id="view-studio" class="view-section hidden space-y-6">
+      <div class="glass-card p-6 rounded-3xl border border-white/10 max-w-3xl mx-auto space-y-6">
+        <div class="flex items-center space-x-3">
+          <span class="text-2xl p-2 rounded-xl bg-indigo-500/20 border border-indigo-500/30 text-indigo-400">🛠</span>
+          <div>
+            <h2 class="text-lg font-bold text-white">Flux AI Studio — Конструктор Агентов</h2>
+            <p class="text-xs text-white/50">Создайте собственного персонажа или экспертного бизнес-ассистента</p>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs text-white/60 mb-1">Имя агента:</label>
+            <input type="text" id="studio-agent-name" placeholder="Например: Senior Frontend Архитектор" class="w-full bg-black/40 border border-white/10 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-brand-primary" />
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="block text-xs text-white/60 mb-1">Базовая модель:</label>
+              <select id="studio-base-model" class="w-full bg-black/40 border border-white/10 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-brand-primary">
+                <option value="gpt-5.6-luna">GPT-5.6 Luna</option>
+                <option value="gpt-5.5">GPT-5.5</option>
+                <option value="gpt-6-astra-low">GPT-6 Astra Low</option>
+                <option value="glm-5.3">GLM-5.3</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-xs text-white/60 mb-1">Иконка / Эмодзи:</label>
+              <input type="text" id="studio-agent-avatar" value="🤖" class="w-full bg-black/40 border border-white/10 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-brand-primary" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs text-white/60 mb-1">Системный промпт (Инструкция характера и поведения):</label>
+            <textarea id="studio-system-prompt" rows="4" placeholder="Ты — ведущий эксперт по React и Tailwind. Твоя цель — писать чистый, модульный код с подробными комментариями..." class="w-full bg-black/40 border border-white/10 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-brand-primary"></textarea>
+          </div>
+
+          <button onclick="window.fluxApp.showToast('Агент успешно сохранен в вашу студию!', 'success')" class="w-full py-3 rounded-xl bg-gradient-to-r from-brand-primary to-indigo-600 text-white font-bold text-xs shadow-md">
+            Сохранить агента
+          </button>
         </div>
       </div>
     </section>
 
-    <!-- Footer -->
-    <footer style="border-top:1px solid rgba(255,255,255,0.08); padding:40px 0 20px; font-size:13px; color:var(--text-muted); margin-top:60px;">
-      <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:24px; margin-bottom:30px;">
-        <div style="max-width:320px;">
-          <div style="font-weight:800; color:#fff; font-size:18px; margin-bottom:8px; display:flex; align-items:center; gap:8px;">
-            <span>⚡</span> Flux VPN AI
+    <!-- ================= VIEW 6: SOCIAL ================= -->
+    <section id="view-social" class="view-section hidden space-y-6 max-w-3xl mx-auto">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <div>
+          <h2 class="text-2xl font-black text-white">Сообщество Flux AI</h2>
+          <p class="text-xs text-white/50">Делитесь промптами, находками и результатами генераций</p>
+        </div>
+        <button onclick="window.fluxApp.showToast('Форма нового поста в разработке', 'info')" class="px-3 py-1.5 rounded-xl bg-brand-primary text-white text-xs font-bold">
+          + Опубликовать
+        </button>
+      </div>
+
+      <div id="social-feed-container" class="space-y-4">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
+    <!-- ================= VIEW 7: BILLING ================= -->
+    <section id="view-billing" class="view-section hidden space-y-10">
+      <div class="text-center max-w-xl mx-auto space-y-2">
+        <h2 class="text-3xl font-black text-white">Тарифные Планы</h2>
+        <p class="text-xs text-white/60">Мгновенное подключение без скрытых комиссий. Оплата через ЮKassa и Telegram Stars.</p>
+      </div>
+
+      <div id="pricing-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Limits Store & Bundles -->
+      <div class="glass-card p-6 rounded-3xl border border-white/10 max-w-4xl mx-auto space-y-4">
+        <h3 class="text-lg font-bold text-white">Магазин лимитов и пакетов</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div class="p-4 rounded-xl border border-white/10 bg-white/5 flex flex-col justify-between">
+            <div>
+              <h4 class="text-sm font-bold text-white">+50 Сообщений</h4>
+              <p class="text-xs text-white/50 mt-1">Дополнительный пакет запросов без ограничения срока действия</p>
+            </div>
+            <button onclick="window.fluxApp.showToast('Пакет +50 сообщений добавлен в заказ', 'info')" class="mt-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-bold">
+              Купить за 29 ₽
+            </button>
           </div>
-          <p style="line-height:1.5; color:var(--text-secondary);">
-            Официальный промо-сайт Telegram-бота @FluxVPNAI_bot. Интеллектуальный помощник нового поколения.
-          </p>
-        </div>
-
-        <div style="display:flex; flex-direction:column; gap:8px;">
-          <div style="font-weight:700; color:#fff; margin-bottom:4px;">Навигация</div>
-          <a href="#models-section" style="color:var(--text-secondary); text-decoration:none;" onclick="document.getElementById('models-section')?.scrollIntoView({behavior:'smooth'}); return false;">🧠 10 Моделей ИИ</a>
-          <a href="#modes-section" style="color:var(--text-secondary); text-decoration:none;" onclick="document.getElementById('modes-section')?.scrollIntoView({behavior:'smooth'}); return false;">⚙️ 15 Режимов</a>
-          <a href="#characters-section" style="color:var(--text-secondary); text-decoration:none;" onclick="document.getElementById('characters-section')?.scrollIntoView({behavior:'smooth'}); return false;">🎭 12 Персонажей</a>
-          <a href="#pricing-section" style="color:var(--text-secondary); text-decoration:none;" onclick="document.getElementById('pricing-section')?.scrollIntoView({behavior:'smooth'}); return false;">👑 Тарифные планы</a>
-          <a href="https://t.me/FluxVPNAI_bot" target="_blank" style="color:#38bdf8; text-decoration:none;">🤖 Запустить бота</a>
-        </div>
-
-        <div style="display:flex; flex-direction:column; gap:8px;">
-          <div style="font-weight:700; color:#fff; margin-bottom:4px;">Прямые ссылки в бот</div>
-          <a href="https://t.me/FluxVPNAI_bot?start=buy_pro" target="_blank" style="color:var(--text-secondary); text-decoration:none;">Подписка Pro (499 ₽)</a>
-          <a href="https://t.me/FluxVPNAI_bot?start=buy_plus" target="_blank" style="color:var(--text-secondary); text-decoration:none;">Подписка Plus (299 ₽)</a>
-          <a href="https://t.me/FluxVPNAI_bot?start=buy_basic" target="_blank" style="color:var(--text-secondary); text-decoration:none;">Подписка Basic (99 ₽)</a>
-          <a href="https://t.me/FluxVPNAI_bot?start=buy_characters" target="_blank" style="color:var(--text-secondary); text-decoration:none;">Бандл 12 персонажей (199 ₽)</a>
-        </div>
-
-        <div style="display:flex; flex-direction:column; gap:8px;">
-          <div style="font-weight:700; color:#fff; margin-bottom:4px;">Поддержка & Право</div>
-          <a href="javascript:void(0)" onclick="openModal('modal-terms')" style="color:var(--text-secondary); text-decoration:none;">Пользовательское соглашение</a>
-          <a href="javascript:void(0)" onclick="openModal('modal-privacy')" style="color:var(--text-secondary); text-decoration:none;">Политика конфиденциальности</a>
-          <a href="javascript:void(0)" onclick="openModal('modal-refund')" style="color:var(--text-secondary); text-decoration:none;">Условия возврата</a>
-          <a href="https://t.me/FluxVPNSup" target="_blank" style="color:#38bdf8; text-decoration:none;">Поддержка @FluxVPNSup</a>
+          <div class="p-4 rounded-xl border border-white/10 bg-white/5 flex flex-col justify-between">
+            <div>
+              <h4 class="text-sm font-bold text-white">+20 Генераций Арт</h4>
+              <p class="text-xs text-white/50 mt-1">Пакет генераций GPT Image 2 в любых стилях</p>
+            </div>
+            <button onclick="window.fluxApp.showToast('Пакет +20 генераций добавлен в заказ', 'info')" class="mt-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-bold">
+              Купить за 49 ₽
+            </button>
+          </div>
+          <div class="p-4 rounded-xl border border-purple-500/30 bg-purple-500/10 flex flex-col justify-between">
+            <div>
+              <h4 class="text-sm font-bold text-purple-300">Бандл Персонажей</h4>
+              <p class="text-xs text-white/50 mt-1">Разблокировка всех 12 культовых персонажей навсегда</p>
+            </div>
+            <button onclick="window.fluxApp.showToast('Бандл персонажей оформляется через ЮKassa', 'info')" class="mt-3 py-1.5 rounded-lg bg-gradient-to-r from-brand-primary to-indigo-600 text-white text-xs font-bold">
+              Купить за 199 ₽
+            </button>
+          </div>
         </div>
       </div>
+    </section>
 
-      <div style="border-top:1px solid rgba(255,255,255,0.05); padding-top:20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
-        <div>© 2026 Flux VPN AI. Все права защищены.</div>
-        <div style="display:flex; gap:16px;">
-          <span>Эквайринг: ЮKassa & Telegram Stars</span>
+    <!-- ================= VIEW 8: REFERRALS ================= -->
+    <section id="view-referrals" class="view-section hidden space-y-6 max-w-3xl mx-auto">
+      <div class="glass-card p-6 rounded-3xl border border-white/10 space-y-6">
+        <div>
+          <h2 class="text-2xl font-black text-white">Реферальная программа 2.0</h2>
+          <p class="text-xs text-white/50">Приглашайте друзей и получайте до 25% от всех их покупок подписок и пакетов</p>
+        </div>
+
+        <div class="space-y-2">
+          <label class="block text-xs text-white/60">Ваша уникальная ссылка:</label>
+          <div class="flex items-center space-x-2">
+            <input type="text" id="referral-link-input" readonly value="https://t.me/FluxVPNTestbot?start=ref_..." class="flex-1 bg-black/40 border border-white/10 rounded-xl p-2.5 text-xs text-cyan-300 font-mono focus:outline-none" />
+            <button onclick="navigator.clipboard.writeText(document.getElementById('referral-link-input').value); window.fluxApp.showToast('Ссылка скопирована!', 'info')" class="px-4 py-2.5 rounded-xl bg-brand-primary text-white text-xs font-bold">
+              Копировать
+            </button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 pt-2">
+          <div class="glass-card p-4 rounded-xl border border-white/10">
+            <span class="text-xs text-white/50">Приглашено пользователей</span>
+            <h4 id="referrals-total-count" class="text-3xl font-black text-white mt-1">0</h4>
+          </div>
+          <div class="glass-card p-4 rounded-xl border border-white/10">
+            <span class="text-xs text-white/50">Заработано (RUB)</span>
+            <h4 id="referrals-earnings" class="text-3xl font-black text-emerald-400 mt-1">0 ₽</h4>
+          </div>
         </div>
       </div>
-    </footer>
+    </section>
+
+    <!-- ================= VIEW 9: GAMIFICATION ================= -->
+    <section id="view-gamification" class="view-section hidden space-y-6 max-w-3xl mx-auto">
+      <div class="glass-card p-6 rounded-3xl border border-white/10 space-y-6">
+        <div class="flex items-center justify-between">
+          <div>
+            <h2 class="text-2xl font-black text-white">Ежедневный Стрик & Награды</h2>
+            <p class="text-xs text-white/50">Заходите каждый день, выполняйте квесты и копите бонусы</p>
+          </div>
+          <div class="text-right">
+            <span class="text-3xl font-black text-amber-400 flex items-center justify-end gap-1">
+              🔥 <span id="daily-streak-count">0</span>
+            </span>
+            <span class="text-[10px] text-white/40 block">дней подряд</span>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <h3 class="text-sm font-bold text-white">Ежедневные квесты</h3>
+          <div id="daily-quests-list" class="space-y-2">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= VIEW 10: ADMIN PANEL ================= -->
+    <section id="view-admin" class="view-section hidden space-y-6">
+      <div class="flex items-center justify-between border-b border-white/10 pb-3">
+        <div>
+          <h2 class="text-2xl font-black text-amber-400">Панель Управления Системой</h2>
+          <p class="text-xs text-white/50">Метрики кластера, финансовые отчеты и управление базой данных</p>
+        </div>
+        <button onclick="window.fluxApp.triggerBackup()" class="px-4 py-2 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 text-xs font-bold hover:bg-amber-500/30 transition-all">
+          💾 Сделать бэкап БД
+        </button>
+      </div>
+
+      <div id="admin-stats-grid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+        <!-- Populated by JS -->
+      </div>
+    </section>
+
   </main>
 
-  <!-- Legal Modals -->
-  <div id="modal-terms" class="modal-overlay" onclick="closeModal('modal-terms')">
-    <div class="modal-content" onclick="event.stopPropagation()">
-      <h3 style="font-size:20px; font-weight:800; color:#fff; margin-bottom:12px;">Пользовательское соглашение</h3>
-      <p style="font-size:13.5px; color:var(--text-secondary); line-height:1.6; margin-bottom:12px;">
-        1. Сервис Flux VPN AI предоставляет доступ к нейросетевым технологиям через официального Telegram-бота @FluxVPNAI_bot.<br/>
-        2. Использование сервиса не требует регистрации на данном веб-сайте. Все функции предоставляются непосредственно в мессенджере Telegram.<br/>
-        3. Оплата цифровых услуг (подписки Basic, Plus, Pro и персонажи) осуществляется в соответствии с тарифами через эквайринг ЮKassa и Telegram Stars.<br/>
-        4. Запрещается использование сервиса для генерации противоправного контента.
-      </p>
-      <button class="btn btn-secondary btn-sm" onclick="closeModal('modal-terms')">Закрыть</button>
+  <!-- Mobile Bottom Floating Navigation Dock -->
+  <div class="lg:hidden fixed bottom-3 left-4 right-4 z-40">
+    <div class="glass-card rounded-2xl border border-white/15 backdrop-blur-2xl p-2 flex items-center justify-around shadow-2xl bg-brand-dark/85">
+      <button data-view="landing" class="flex flex-col items-center text-white/60 hover:text-white p-1">
+        <span class="text-base">🏠</span>
+        <span class="text-[9px] mt-0.5">Главная</span>
+      </button>
+      <button data-view="chat" class="flex flex-col items-center text-white/60 hover:text-white p-1">
+        <span class="text-base">💬</span>
+        <span class="text-[9px] mt-0.5">Чат</span>
+      </button>
+      <button data-view="art" class="flex flex-col items-center text-white/60 hover:text-white p-1">
+        <span class="text-base">🎨</span>
+        <span class="text-[9px] mt-0.5">Арт</span>
+      </button>
+      <button data-view="characters" class="flex flex-col items-center text-white/60 hover:text-white p-1">
+        <span class="text-base">🎭</span>
+        <span class="text-[9px] mt-0.5">Герои</span>
+      </button>
+      <button data-view="billing" class="flex flex-col items-center text-white/60 hover:text-white p-1">
+        <span class="text-base">💎</span>
+        <span class="text-[9px] mt-0.5">Тарифы</span>
+      </button>
     </div>
   </div>
 
-  <div id="modal-privacy" class="modal-overlay" onclick="closeModal('modal-privacy')">
-    <div class="modal-content" onclick="event.stopPropagation()">
-      <h3 style="font-size:20px; font-weight:800; color:#fff; margin-bottom:12px;">Политика конфиденциальности</h3>
-      <p style="font-size:13.5px; color:var(--text-secondary); line-height:1.6; margin-bottom:12px;">
-        1. Веб-сайт Flux VPN AI не собирает персональные данные посетителей (ФИО, пароли, паспортные данные).<br/>
-        2. В целях предотвращения спама в демонстрационной песочнице используется технический подсчет запросов по IP-адресу и локальному хэшу браузера (лимит 2 запроса).<br/>
-        3. Диалоги в Telegram-боте строго конфиденциальны и не передаются третьим лицам.
-      </p>
-      <button class="btn btn-secondary btn-sm" onclick="closeModal('modal-privacy')">Закрыть</button>
+  <!-- Modal: Telegram Auth -->
+  <div id="auth-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="glass-card rounded-3xl border border-white/20 p-6 max-w-sm w-full space-y-5 shadow-2xl relative">
+      <button data-close-modal="auth-modal" class="absolute top-4 right-4 text-white/40 hover:text-white">✕</button>
+      
+      <div class="text-center space-y-1">
+        <div class="w-12 h-12 rounded-2xl bg-brand-primary/20 text-brand-primary border border-brand-primary/30 flex items-center justify-center mx-auto text-2xl">✈️</div>
+        <h3 class="text-lg font-bold text-white">Вход через Telegram</h3>
+        <p class="text-xs text-white/50">Отсканируйте QR или перейдите по ссылке в бота</p>
+      </div>
+
+      <!-- QR Code Canvas Container -->
+      <div id="auth-qr-container" class="flex justify-center py-1">
+        <!-- SVG / QR rendered by JS -->
+      </div>
+
+      <div class="space-y-2">
+        <a id="auth-deep-link" href="#" target="_blank" class="block w-full py-2.5 rounded-xl bg-gradient-to-r from-brand-primary to-indigo-600 text-white font-bold text-center text-xs shadow-md">
+          Открыть Telegram бота
+        </a>
+      </div>
+
+      <div class="relative flex py-1 items-center">
+        <div class="flex-grow border-t border-white/10"></div>
+        <span class="flex-shrink mx-3 text-[10px] uppercase tracking-wider text-white/40 font-mono">или по коду</span>
+        <div class="flex-grow border-t border-white/10"></div>
+      </div>
+
+      <div class="space-y-2">
+        <div class="flex space-x-2">
+          <input type="text" id="auth-code-input" maxlength="6" placeholder="6-значный код" class="flex-1 bg-black/40 border border-white/10 rounded-xl p-2 text-center font-mono text-sm tracking-widest text-white focus:outline-none focus:border-brand-primary" />
+          <button id="auth-submit-code-btn" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs font-bold">
+            Вход
+          </button>
+        </div>
+      </div>
+
+      <!-- Dev Login Bypass Button -->
+      <div class="pt-2 border-t border-white/10 text-center">
+        <button id="dev-login-btn" class="text-[11px] text-amber-400/80 hover:text-amber-300 underline font-mono">
+          ⚡ Dev Mode: Войти как Администратор (тест)
+        </button>
+      </div>
+
     </div>
   </div>
 
-  <div id="modal-refund" class="modal-overlay" onclick="closeModal('modal-refund')">
-    <div class="modal-content" onclick="event.stopPropagation()">
-      <h3 style="font-size:20px; font-weight:800; color:#fff; margin-bottom:12px;">Условия возврата средств</h3>
-      <p style="font-size:13.5px; color:var(--text-secondary); line-height:1.6; margin-bottom:12px;">
-        Цифровые товары и доступ к нейросетевым функциям активируются моментально после оплаты.<br/>
-        В случае возникновения технических неполадок или вопросов по списаниям обратитесь в службу поддержки: @FluxVPNSup.
-      </p>
-      <button class="btn btn-secondary btn-sm" onclick="closeModal('modal-refund')">Закрыть</button>
+  <!-- Modal: Flux Memory -->
+  <div id="memory-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="glass-card rounded-3xl border border-white/20 p-6 max-w-md w-full space-y-4 shadow-2xl relative">
+      <button data-close-modal="memory-modal" class="absolute top-4 right-4 text-white/40 hover:text-white">✕</button>
+      <div class="flex items-center space-x-2">
+        <span class="text-xl">🧠</span>
+        <h3 class="text-base font-bold text-white">Память Flux Memory</h3>
+      </div>
+      <p class="text-xs text-white/50">Факты, которые нейросеть сохранила в ходе ваших диалогов:</p>
+      <div id="memory-list-container" class="max-h-64 overflow-y-auto space-y-2">
+        <!-- Populated by JS -->
+      </div>
     </div>
   </div>
 
-  <!-- Embedded Interactive Logic -->
-  <script>
-    // 10 AI Models strictly matching user Photo 4
-    const modelsData = [
-      { id: "gpt-5.6-luna", name: "GPT-5.6 Luna", emoji: "🌙", badge: "Флагман", desc: "Скоростная основная модель для диалогов и задач." },
-      { id: "gpt-5.4-mini", name: "GPT-5.4 Mini", emoji: "⚡", badge: "Активна в демо", desc: "Мгновенные точные ответы при минимальном времени отклика.", isDemo: true },
-      { id: "gpt-5.5", name: "GPT-5.5", emoji: "💎", badge: "Pro", desc: "Сбалансированная модель для углубленной аналитики текстов." },
-      { id: "gpt-5.6-sol", name: "GPT-5.6 Sol", emoji: "💎", badge: "Pro", desc: "Повышенная креативность и широкий контекст рассуждений." },
-      { id: "gpt-5.6-terra", name: "GPT-5.6 Terra", emoji: "💎", badge: "Pro", desc: "Устойчивость к сложным многосоставным инструкциям." },
-      { id: "gpt-5.4", name: "GPT-5.4", emoji: "💎", badge: "Стабильная", desc: "Классическая проверенная нейросеть высокой надежности." },
-      { id: "gpt-6-astra-low", name: "GPT-6 Astra (low)", emoji: "✨", badge: "Deep Reasoning", desc: "Передовая модель с цепочками рассуждений следующего поколения." },
-      { id: "glm-5.3", name: "GLM-5.3", emoji: "⚡", badge: "Быстрая", desc: "Высокоскоростная модель для программирования и вычислений." },
-      { id: "glm-5.3-flash", name: "GLM-5.3 Flash", emoji: "🚀", badge: "Ультраскорость", desc: "Мгновенная генерация ответов с низким latency." },
-      { id: "glm-5.2", name: "GLM-5.2", emoji: "💡", badge: "Интеллект", desc: "Эрудированная модель для логического анализа и переводов." }
-    ];
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col space-y-2 pointer-events-none max-w-sm"></div>
 
-    // 15 Modes strictly matching user Photo 5
-    const modesData = [
-      { slug: "support", name: "Техподдержка Flux VPN", emoji: "🛡️", desc: "Профессионально, вежливо и четко по шагам решает любые вопросы по сервису." },
-      { slug: "normal", name: "Обычный", emoji: "🙂", desc: "Дружелюбный живой диалог без лишнего пафоса и канцеляризмов." },
-      { slug: "fun", name: "Угарный", emoji: "😂", desc: "Мемный русский сленг, яркие аналогии и искрометный юмор." },
-      { slug: "aggressive", name: "Агрессивный", emoji: "🔥", desc: "Напористый, дерзкий тон, жесткие короткие фразы без сантиментов." },
-      { slug: "coder", name: "Программирование", emoji: "💻", desc: "Чистый запускаемый код, решение алгоритмов, оптимизация и тесты." },
-      { slug: "brief", name: "Кратко", emoji: "⚡", desc: "Сухая выжимка сути, не более 3–5 пунктов без лишней воды." },
-      { slug: "research", name: "Исследователь", emoji: "🔬", desc: "Разделение фактов и гипотез, научная методология и строгие аргументы." },
-      { slug: "study", name: "Обучение", emoji: "📖", desc: "От простого к сложному, наглядные примеры и жизненные метафоры." },
-      { slug: "debugger", name: "Отладка кода", emoji: "💎", desc: "Поиск скрытых багов, анализ стек-трейсов, регрессий и исправление ошибок." },
-      { slug: "architect", name: "Архитектор ПО", emoji: "💎", desc: "Проектирование микросервисов, баз данных, очередей и архитектуры." },
-      { slug: "horror", name: "Хоррор-история", emoji: "💎", desc: "Мрачная гнетущая атмосфера, саспенс и психологическое напряжение." },
-      { slug: "business", name: "Бизнес-разбор", emoji: "💎", desc: "Юнит-экономика, когортный анализ, метрики, риски и точки роста." },
-      { slug: "expert", name: "Эксперт PRO", emoji: "💎", desc: "Комплексная аналитика уровня ведущих консалтинговых агентств." },
-      { slug: "brainstorm", name: "Мозговой штурм", emoji: "💎", desc: "Генерация 10+ нестандартных и креативных идей для ваших проектов." },
-      { slug: "coach", name: "Личный наставник", emoji: "💎", desc: "Постановка целей, привычки, трекинг прогресса и мощная мотивация." }
-    ];
-
-    // 12 Iconic & Meme Characters
-    const charactersData = [
-      { slug: "momo", name: "Момо", emoji: "👁", badge: "Хоррор", story: "Жуткая городская легенда. Появляется внезапно в ночных звонках и сообщениях.", manner: "Хриплый шепот, леденящий саспенс." },
-      { slug: "navalny", name: "Навальный", emoji: "📢", badge: "Мем-легенда", story: "Неунывающий политик и борец за прекрасную Россию будущего.", manner: "«Привет, это Навальный!», оптимизм, ирония." },
-      { slug: "baldi", name: "Балди", emoji: "📏", badge: "Учитель", story: "Учитель математики в зеленой кофте с громкой деревянной линейкой.", manner: "«Отлично решено!», нервный стук линейки." },
-      { slug: "granny", name: "Бабка Гренни", emoji: "👵", badge: "Хоррор", story: "Слепая бабка из старого дома с тяжелой битой. Слышит каждый твой шорох.", manner: "«I see you...», скрип половиц, жуткий смех." },
-      { slug: "slender", name: "Слендермен", emoji: "🌲", badge: "Легенда", story: "Безликий долговязый кошмар ночного леса в строгом похоронном костюме.", manner: "Помехи в эфире, зловещая тишина леса." },
-      { slug: "siren_head", name: "Сиреноголовый", emoji: "🚨", badge: "Криптид", story: "Гигантский криптид с сиренами вместо головы. Транслирует сигнал тревоги.", manner: "Вой сирен воздушной тревоги, радиопомехи." },
-      { slug: "smile_dog", name: "Smile Dog", emoji: "🐶", badge: "Крипипаста", story: "Проклятая улыбающаяся собака из крипипасты 2008 года.", manner: "«SPREAD THE WORD», жуткий оскал." },
-      { slug: "backrooms_guide", name: "Проводник Backrooms", emoji: "🟨", badge: "Закулисье", story: "Опытный сталкер бесконечных желтых комнат уровня 0 Закулисья.", manner: "Осторожный шепот, миндальная вода, ноуклип." },
-      { slug: "herobrine", name: "Херобрин", emoji: "⛏", badge: "Minecraft", story: "Мистический призрак с пустыми белыми глазами из глубин мира Minecraft.", manner: "Пирамиды из песка, появление в тумане." },
-      { slug: "doge", name: "Доге", emoji: "🐕", badge: "Классика", story: "Легендарная шиба-ину из классических интернет-мемов интернета.", manner: "Much wow, very crypto, so AI, such amaze." },
-      { slug: "trollface", name: "Троллфейс", emoji: "😏", badge: "Троллинг", story: "Культовое лицо троллинга. Любит безумную физику и тролль-науку.", manner: "«Problem?», масло отталкивает воду -> лети!" },
-      { slug: "gigachad", name: "Гигачад", emoji: "🗿", badge: "Абсолютная база", story: "Абсолютная база, мужественность, железная уверенность и стоицизм.", manner: "Лаконичный, вдохновляющий, непоколебимый." }
-    ];
-
-    // Render Models
-    const modelsContainer = document.getElementById("models-grid");
-    if (modelsContainer) {
-      modelsContainer.innerHTML = modelsData.map(m => `
-        <div class="liquid-glass tilt-card glow-hover" style="display:flex; flex-direction:column; justify-content:space-between; padding:20px; border-radius:18px; ${m.isDemo ? 'border:1px solid rgba(56,189,248,0.5);' : ''}">
-          <div class="tilt-inner">
-            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
-              <div style="font-size:28px; filter:drop-shadow(0 0 10px rgba(56,189,248,0.4));">${m.emoji}</div>
-              <span class="badge ${m.isDemo ? 'badge-emerald' : ''}" style="font-size:11px; background:rgba(255,255,255,0.08); color:#cbd5e1; border:1px solid rgba(255,255,255,0.12);">${m.badge}</span>
-            </div>
-            <h3 style="font-size:17.5px; font-weight:800; color:#fff; margin-bottom:6px;">${m.name}</h3>
-            <p style="font-size:12.5px; color:var(--text-secondary); line-height:1.45; margin-bottom:16px;">${m.desc}</p>
-          </div>
-          <a href="https://t.me/FluxVPNAI_bot?start=model_${m.id}" target="_blank" class="btn btn-secondary btn-sm" style="width:100%; text-decoration:none;">
-            ⚡ Выбрать в боте ↗
-          </a>
-        </div>
-      `).join('');
-    }
-
-    // Render Modes
-    const modesContainer = document.getElementById("modes-grid");
-    if (modesContainer) {
-      modesContainer.innerHTML = modesData.map(mode => `
-        <div class="liquid-glass tilt-card glow-hover" style="display:flex; flex-direction:column; justify-content:space-between; padding:20px; border-radius:18px;">
-          <div class="tilt-inner">
-            <div style="font-size:32px; margin-bottom:10px;">${mode.emoji}</div>
-            <h3 style="font-size:16.5px; font-weight:700; color:#fff; margin-bottom:6px;">${mode.name}</h3>
-            <p style="font-size:12.5px; color:var(--text-secondary); line-height:1.45; margin-bottom:16px;">${mode.desc}</p>
-          </div>
-          <a href="https://t.me/FluxVPNAI_bot?start=mode_${mode.slug}" target="_blank" class="btn btn-outline btn-sm" style="width:100%; text-decoration:none;">
-            ⚡ Включить режим в боте ↗
-          </a>
-        </div>
-      `).join('');
-    }
-
-    // Render Characters
-    const charactersContainer = document.getElementById("characters-grid");
-    if (charactersContainer) {
-      charactersContainer.innerHTML = charactersData.map(char => `
-        <div class="liquid-glass tilt-card glow-hover" style="display:flex; flex-direction:column; justify-content:space-between; padding:20px; border-radius:18px;">
-          <div class="tilt-inner">
-            <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
-              <div style="font-size:36px; filter:drop-shadow(0 0 10px rgba(56,189,248,0.4));">${char.emoji}</div>
-              <span class="badge" style="font-size:10.5px; background:rgba(255,255,255,0.08); color:#cbd5e1; border:1px solid rgba(255,255,255,0.12);">${char.badge}</span>
-            </div>
-            <h3 style="font-size:17px; font-weight:800; color:#fff; margin-bottom:6px;">${char.name}</h3>
-            <p style="font-size:12.5px; color:var(--text-secondary); line-height:1.45; margin-bottom:10px;">${char.story}</p>
-            <div style="font-size:11.5px; color:var(--text-muted); font-style:italic; margin-bottom:16px;">
-              💬 Манера: ${char.manner}
-            </div>
-          </div>
-          <a href="https://t.me/FluxVPNAI_bot?start=char_${char.slug}" target="_blank" class="btn btn-secondary btn-sm" style="width:100%; text-decoration:none;">
-            💬 Начать диалог в боте ↗
-          </a>
-        </div>
-      `).join('');
-    }
-
-    // Browser Fingerprint & Quota Logic (2 requests limit by IP & browser)
-    function getBrowserFingerprint() {
-      let fp = localStorage.getItem("flux_browser_fp");
-      if (!fp) {
-        fp = "fp_" + Math.random().toString(36).substring(2, 12) + "_" + Date.now().toString(36);
-        localStorage.setItem("flux_browser_fp", fp);
-      }
-      return fp;
-    }
-
-    async function initQuotaStatus() {
-      try {
-        const fp = getBrowserFingerprint();
-        const res = await fetch(`/api/chats/public-demo/status?browser_id=${encodeURIComponent(fp)}`);
-        if (res.ok) {
-          const data = await res.json();
-          updateQuotaUI(data.requests_left, data.max_requests);
-          return;
-        }
-      } catch (e) {
-        // Local fallback
-      }
-      const localUsed = parseInt(localStorage.getItem("flux_demo_used") || "0", 10);
-      updateQuotaUI(Math.max(0, 2 - localUsed), 2);
-    }
-
-    function updateQuotaUI(left, maxReq = 2) {
-      const badgeEl = document.getElementById("demo-requests-left");
-      const inputEl = document.getElementById("landing-demo-input");
-      const btnEl = document.getElementById("btn-submit-demo");
-
-      if (badgeEl) badgeEl.innerText = left;
-
-      if (left <= 0) {
-        if (inputEl) {
-          inputEl.disabled = true;
-          inputEl.placeholder = "Лимит бесплатных запросов исчерпан (2/2). Перейдите в @FluxVPNAI_bot!";
-          inputEl.style.opacity = "0.7";
-        }
-        if (btnEl) {
-          btnEl.innerText = "🚀 Открыть @FluxVPNAI_bot ↗";
-          btnEl.onclick = () => window.open("https://t.me/FluxVPNAI_bot", "_blank");
-        }
-      }
-    }
-
-    function setDemoPrompt(text) {
-      const inputEl = document.getElementById("landing-demo-input");
-      if (inputEl) {
-        inputEl.value = text;
-        inputEl.focus();
-      }
-    }
-
-    async function submitDemoPrompt() {
-      const inputEl = document.getElementById("landing-demo-input");
-      const outputEl = document.getElementById("landing-demo-output");
-      const btnEl = document.getElementById("btn-submit-demo");
-      const prompt = inputEl?.value.trim();
-
-      if (!prompt) return;
-
-      let localUsed = parseInt(localStorage.getItem("flux_demo_used") || "0", 10);
-      if (localUsed >= 2) {
-        updateQuotaUI(0, 2);
-        outputEl.innerHTML = `
-          <div style="color:#ef4444; font-weight:700; margin-bottom:8px;">⚠️ Лимит демо-запросов исчерпан (2/2)</div>
-          <div style="font-size:13px; color:var(--text-secondary); margin-bottom:12px;">
-            В веб-песочнице доступно строго 2 бесплатных запроса по IP и отпечатку браузера.<br/>
-            Продолжайте общение без ограничений в нашем официальном боте:
-          </div>
-          <a href="https://t.me/FluxVPNAI_bot" target="_blank" class="btn btn-liquid btn-sm" style="text-decoration:none;">
-            🚀 Запустить @FluxVPNAI_bot в Telegram ↗
-          </a>
-        `;
-        return;
-      }
-
-      if (btnEl) btnEl.disabled = true;
-      outputEl.innerHTML = `<span style="color:#38bdf8;">⚡ GPT-5.4 Mini генерирует ответ...</span>`;
-
-      try {
-        const fp = getBrowserFingerprint();
-        const res = await fetch("/api/chats/public-demo", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-browser-fingerprint": fp
-          },
-          body: JSON.stringify({ prompt: prompt, model: "gpt-5.4-mini" })
-        });
-
-        if (res.status === 429) {
-          localStorage.setItem("flux_demo_used", "2");
-          updateQuotaUI(0, 2);
-          outputEl.innerHTML = `
-            <div style="color:#ef4444; font-weight:700; margin-bottom:8px;">⚠️ Превышен лимит (2/2 запроса)</div>
-            <div style="font-size:13px; color:var(--text-secondary); margin-bottom:12px;">
-              Вы использовали 2 бесплатных демо-запроса с этого IP/браузера. Перейдите в Telegram-бот:
-            </div>
-            <a href="https://t.me/FluxVPNAI_bot" target="_blank" class="btn btn-liquid btn-sm">
-              🚀 Открыть @FluxVPNAI_bot в Telegram ↗
-            </a>
-          `;
-          return;
-        }
-
-        if (!res.ok) throw new Error("Server error");
-
-        const data = await res.json();
-        localUsed++;
-        localStorage.setItem("flux_demo_used", localUsed.toString());
-        updateQuotaUI(Math.max(0, 2 - localUsed), 2);
-
-        outputEl.innerHTML = `
-          <div style="font-size:11px; color:#10b981; font-weight:700; margin-bottom:6px;">⚡ GPT-5.4 Mini • Ответ готов:</div>
-          <div style="white-space:pre-wrap; margin-bottom:12px;">${escapeHtml(data.response || data.text || "Ответ сгенерирован успешно.")}</div>
-          <div style="border-top:1px solid rgba(255,255,255,0.08); padding-top:10px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-            <span style="font-size:11.5px; color:var(--text-muted);">Осталось бесплатных демо-запросов: ${Math.max(0, 2 - localUsed)}/2</span>
-            <a href="https://t.me/FluxVPNAI_bot" target="_blank" style="color:#38bdf8; font-size:12.5px; font-weight:700; text-decoration:none;">
-              ⚡ Продолжить безлимитно в @FluxVPNAI_bot ↗
-            </a>
-          </div>
-        `;
-      } catch (err) {
-        // Offline / Standalone smart mock answer
-        localUsed++;
-        localStorage.setItem("flux_demo_used", localUsed.toString());
-        updateQuotaUI(Math.max(0, 2 - localUsed), 2);
-
-        let reply = "Отличный запрос! В Telegram-боте @FluxVPNAI_bot вам доступны 10 мощнейших моделей ИИ (GPT-5.6 Luna, GPT-5.4 Mini, GPT-6 Astra low), 15 режимов общения и генератор артов.";
-        if (prompt.includes("стартап")) {
-          reply = "1. AI-копирайтер для Telegram-каналов с автоматическим постингом.\n2. Микросервис генерации визуалов для маркетплейсов (Wildberries, Ozon).\n3. Персонализированный AI-репетитор английского языка в Telegram.";
-        } else if (prompt.includes("Python") || prompt.includes("бот")) {
-          reply = "```python\nimport asyncio\nfrom aiogram import Bot, Dispatcher, types\n\nbot = Bot(token='YOUR_TELEGRAM_TOKEN')\ndp = Dispatcher()\n\n@dp.message()\nasync def reply(msg: types.Message):\n    await msg.answer('Привет! Я AI-бот на базе GPT-5.4 Mini.')\n```";
-        } else if (prompt.includes("арт") || prompt.includes("киберпанк")) {
-          reply = "Промпт: «Futuristic cyberpunk megacity at rainy night, neon holographic billboards in blue and magenta, wet asphalt reflections, hyper-detailed 8k octane render, cinematic lighting --ar 16:9»";
-        }
-
-        outputEl.innerHTML = `
-          <div style="font-size:11px; color:#10b981; font-weight:700; margin-bottom:6px;">⚡ GPT-5.4 Mini • Демо-режим:</div>
-          <div style="white-space:pre-wrap; margin-bottom:12px;">${escapeHtml(reply)}</div>
-          <div style="border-top:1px solid rgba(255,255,255,0.08); padding-top:10px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-            <span style="font-size:11.5px; color:var(--text-muted);">Осталось бесплатных демо-запросов: ${Math.max(0, 2 - localUsed)}/2</span>
-            <a href="https://t.me/FluxVPNAI_bot" target="_blank" style="color:#38bdf8; font-size:12.5px; font-weight:700; text-decoration:none;">
-              ⚡ Запустить в @FluxVPNAI_bot ↗
-            </a>
-          </div>
-        `;
-      } finally {
-        if (btnEl && localUsed < 2) btnEl.disabled = false;
-      }
-    }
-
-    function escapeHtml(str) {
-      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-    }
-
-    function toggleFaq(id) {
-      const el = document.getElementById("faq-answer-" + id);
-      const icon = document.getElementById("faq-icon-" + id);
-      if (el) {
-        const isHidden = el.style.display === "none" || !el.style.display;
-        el.style.display = isHidden ? "block" : "none";
-        if (icon) icon.innerText = isHidden ? "−" : "+";
-      }
-    }
-
-    function openModal(id) {
-      const modal = document.getElementById(id);
-      if (modal) modal.style.display = "flex";
-    }
-
-    function closeModal(id) {
-      const modal = document.getElementById(id);
-      if (modal) modal.style.display = "none";
-    }
-
-    // Interactive 3D tilt calculation
-    document.addEventListener("mousemove", (e) => {
-      const cards = document.querySelectorAll(".tilt-card");
-      cards.forEach(card => {
-        const rect = card.getBoundingClientRect();
-        if (
-          e.clientX >= rect.left &&
-          e.clientX <= rect.right &&
-          e.clientY >= rect.top &&
-          e.clientY <= rect.bottom
-        ) {
-          const x = e.clientX - rect.left - rect.width / 2;
-          const y = e.clientY - rect.top - rect.height / 2;
-          const rotX = -(y / (rect.height / 2)) * 6;
-          const rotY = (x / (rect.width / 2)) * 6;
-          card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-2px)`;
-        } else {
-          card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)";
-        }
-      });
-    });
-
-    // Initialize quota on load
-    window.addEventListener("DOMContentLoaded", () => {
-      initQuotaStatus();
-    });
-  </script>
+  <!-- Scripts -->
+  <script src="/static/js/core3d.js"></script>
+  <script src="/static/js/app.js"></script>
 </body>
 </html>
